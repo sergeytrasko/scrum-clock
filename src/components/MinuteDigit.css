@@ -1,0 +1,11 @@
+.minute-digit {
+    position: absolute;
+    width: 20vmin;
+    height: 20vmin;
+    font-size: 8vmin;
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: 20vmin;
+    z-index: -999;
+}

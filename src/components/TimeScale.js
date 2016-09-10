@@ -13,6 +13,8 @@ export default class TimeScale extends React.Component {
             this.showTime(minutes);
             if (minutes <= 0) {
                 clearTimeout(this.timer);
+                let audio = new Audio(require('../../timeover.mp3'));
+                audio.play();
             }
         }, 1000);
     }
@@ -33,6 +35,11 @@ export default class TimeScale extends React.Component {
     }
 
     selectTime(event) {
+        const minutes = this.showTimeFromEvent(event);
+        this.startTimer(minutes);
+    }
+
+    showTimeFromEvent(event) {
         const element = this.refs.scale;
         const elementDimension = element.getBoundingClientRect();
 
@@ -48,11 +55,33 @@ export default class TimeScale extends React.Component {
         }
         var minutes = Math.round(angle / 6);
         this.showTime(minutes);
-        this.startTimer(minutes);
+        return minutes;
+    }
+
+    startSelectTime() {
+        this.selecting = true;
+    }
+
+    finishSelectTime(event) {
+        if (this.selecting) {
+            this.selecting = false;
+            this.selectTime(event);
+        }
+    }
+
+    moving(event) {
+        if (this.selecting) {
+            this.showTimeFromEvent(event);
+        }
     }
 
     render() {
-        return <div onClick={this.selectTime.bind(this)} className='time-scale-container'>
+        return <div
+            onMouseDown={this.startSelectTime.bind(this)}
+            onMouseUp={this.finishSelectTime.bind(this)}
+            onMouseMove={this.moving.bind(this)}
+            onMouseOut={this.finishSelectTime.bind(this)}
+            className='time-scale-container'>
             <div ref='scale' className='time-scale'></div>
             <ScaleTicks/>
         </div>

@@ -43,6 +43,10 @@ module.exports = {
             {
                 test:   /\.css$/,
                 loader: "style-loader!css-loader!postcss-loader"
+            },
+            {
+                test: /\.mp3$/,
+                loader: 'file'
             }
         ]
     },

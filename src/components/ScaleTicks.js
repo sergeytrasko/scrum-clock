@@ -3,8 +3,10 @@ import './ScaleTicks.css';
 
 export default class ScaleTicks extends React.Component {
     tickElement(prefix, totalCount, value) {
+        var rotate = 'rotate(' + (90 - value * (360 / totalCount)) + 'deg)';
         const style = {
-            transform: 'rotate(' + (90 - value * (360 / totalCount)) + 'deg)'
+            transform: rotate,
+            WebkitTransform: rotate
         };
         const key = prefix + value;
         return <div key={key} className={prefix + '-line'} style={style}><div className={prefix + '-tick'}></div></div>

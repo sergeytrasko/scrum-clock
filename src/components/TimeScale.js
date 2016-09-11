@@ -4,6 +4,14 @@ import ScaleTicks from './ScaleTicks';
 
 export default class TimeScale extends React.Component {
 
+    initSound() {
+        if (!this.audio) {
+            this.audio = new Audio(require('../../timeover.mp3'));
+            this.audio.play();
+            this.audio.pause();
+        }
+    }
+
     startTimer(minutes) {
         if (this.timer) {
             clearTimeout(this.timer);
@@ -13,8 +21,8 @@ export default class TimeScale extends React.Component {
             this.showTime(minutes);
             if (minutes <= 0) {
                 clearTimeout(this.timer);
-                let audio = new Audio(require('../../timeover.mp3'));
-                audio.play();
+                this.initSound();
+                this.audio.play();
             }
         }, 1000);
     }
@@ -81,6 +89,7 @@ export default class TimeScale extends React.Component {
             onMouseUp={this.finishSelectTime.bind(this)}
             onMouseMove={this.moving.bind(this)}
             onMouseOut={this.finishSelectTime.bind(this)}
+            onTouchStart={this.initSound.bind(this)}
             className='time-scale-container'>
             <div ref='scale' className='time-scale'></div>
             <ScaleTicks/>

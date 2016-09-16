@@ -6,9 +6,14 @@ class ClockFace extends Component {
 
     constructor() {
         super();
+
+        this.state = {
+            minutes: 0
+        };
+
         this.startSelectTime = this.startSelectTime.bind(this);
         this.finishSelectTime = this.finishSelectTime.bind(this);
-        this.moving = this.moving.bind(this);
+        this.selectingTime = this.selectingTime.bind(this);
         this.finishSelectTime = this.finishSelectTime.bind(this);
         this.initSound = this.initSound.bind(this);
     }
@@ -21,14 +26,13 @@ class ClockFace extends Component {
         }
     }
 
-    startTimer(minutes) {
+    startTimer() {
         if (this.timer) {
             clearTimeout(this.timer);
         }
         this.timer = setInterval(() => {
-            minutes--;
-            this.showTime(minutes);
-            if (minutes <= 0) {
+            this.setState({minutes: this.state.minutes - 1});
+            if (this.state.minutes <= 0) {
                 clearTimeout(this.timer);
                 this.initSound();
                 this.audio.play();
@@ -36,25 +40,7 @@ class ClockFace extends Component {
         }, 1000);
     }
 
-    showTime(minutes) {
-        const angle = minutes * 6, rotatedAngle = 90 - angle;
-        let style;
-        if (angle > 180) {
-            style = `linear-gradient(90deg,red 50%,transparent 50%),linear-gradient(${rotatedAngle}deg,transparent 50%,red 50%)`;
-        } else {
-            style = `linear-gradient(90deg,transparent 50%,white 50%),linear-gradient(${rotatedAngle}deg,transparent 50%,red 50%)`;
-        }
-
-        const element = this.refs.face;
-        element.style.backgroundImage = style;
-    }
-
-    selectTime(event) {
-        const minutes = this.showTimeFromEvent(event);
-        this.startTimer(minutes);
-    }
-
-    showTimeFromEvent(event) {
+    getMinutesSelected(event) {
         const elementDimension = this.refs.face.getBoundingClientRect();
 
         const dx = elementDimension.width / 2 - event.nativeEvent.offsetX;
@@ -63,9 +49,12 @@ class ClockFace extends Component {
         if (dx < 0) {
             angle += 180;
         }
-        const minutes = Math.round(angle / 6);
-        this.showTime(minutes);
-        return minutes;
+        return Math.round(angle / 6);
+    }
+
+    selectTime(event) {
+        this.setState({minutes: this.getMinutesSelected(event)});
+        this.startTimer();
     }
 
     startSelectTime() {
@@ -79,21 +68,35 @@ class ClockFace extends Component {
         }
     }
 
-    moving(event) {
+    selectingTime(event) {
         if (this.selecting) {
-            this.showTimeFromEvent(event);
+            this.setState({minutes: this.getMinutesSelected(event)});
         }
+    }
+
+    calculateStyle() {
+        const angle = this.state.minutes * 6, rotatedAngle = 90 - angle;
+        let style;
+        if (angle > 180) {
+            style = `linear-gradient(90deg,red 50%,transparent 50%),linear-gradient(${rotatedAngle}deg,transparent 50%,red 50%)`;
+        } else {
+            style = `linear-gradient(90deg,transparent 50%,white 50%),linear-gradient(${rotatedAngle}deg,transparent 50%,red 50%)`;
+        }
+
+        return {
+            backgroundImage: style
+        };
     }
 
     render() {
         return <div
             onMouseDown={this.startSelectTime}
             onMouseUp={this.finishSelectTime}
-            onMouseMove={this.moving}
+            onMouseMove={this.selectingTime}
             onMouseOut={this.finishSelectTime}
             onTouchStart={this.initSound}
             className='clock-face-container'>
-            <div ref='face' className='clock-face'></div>
+            <div ref='face' className='clock-face' style={this.calculateStyle()}></div>
             <ClockFaceBackground/>
         </div>
     }

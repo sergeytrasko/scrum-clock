@@ -35,8 +35,8 @@ class MinuteDigit extends Component {
         const radians = (2 * Math.PI) * (1.0 * this.state.value * 30 / 360);
         const angle = 3 * Math.PI / 2 - radians;
         const style = {
-            top: (center + Math.round(Math.sin(angle) * radius) * 0.78 - 10) + '%',
-            left: (center + Math.round(Math.cos(angle) * radius) * 0.78 - 10) + '%',
+            top: (center + Math.round(Math.sin(angle) * radius) * 0.82 - 10) + '%',
+            left: (center + Math.round(Math.cos(angle) * radius) * 0.82 - 10) + '%',
             fontSize: this.state.labelFontSize
         };
         return (<div className='minute-digit' style={style}>

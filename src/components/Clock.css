@@ -1,0 +1,22 @@
+.clock {
+    width: 100%;
+    background: black;
+    padding: 6%;
+    border-radius: 6%;
+    position: relative;
+}
+
+.clock:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}
+
+.clock-inner {
+    width: 88%;
+    height: 88%;
+    left: 6%;
+    top: 6%;
+    background: white;
+    position: absolute;
+}

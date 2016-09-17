@@ -6,29 +6,31 @@
 }
 
 .hour-line {
-    width: 78%;
-    left: 11%;
-    height: 0.5vmin;
+    width: 64%;
+    left: 18%;
+    height: 0.5%;
     top: 50%;
     position: absolute;
+    z-index: 2;
 }
 
 .hour-tick {
-    width: 5vmin;
+    width: 7%;
     height: 100%;
     background-color: black;
 }
 
 .minute-line {
-    width: 78%;
-    left: 11%;
-    height: 0.5vmin;
+    width: 64%;
+    left: 18%;
+    height: 0.5%;
     top: 50%;
     position: absolute;
+    z-index: 2;
 }
 
 .minute-tick {
-    width: 2vmin;
+    width: 3%;
     height: 100%;
     background-color: black;
 }

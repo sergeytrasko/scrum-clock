@@ -1,28 +1,20 @@
 import React from 'react';
+import './Clock.css';
 import ClockFace from './ClockFace';
 import MinuteDigit from './MinuteDigit';
 
-const minuteDigits = (size) => {
+const minuteDigits = () => {
     return [...new Array(12)].map((x, i) => (<MinuteDigit key={i}
-                                               radius={size / 2}
-                                               center={size / 2}
                                                value={i}/>)
     );
 };
 
-const Clock = (props) => {
-    const {size} = props;
-    const border = size / 12.0;
-    const style = {
-        width: size + 'vmin',
-        height: size + 'vmin',
-        border: border + 'vmin solid black',
-        borderRadius: border + 'vmin',
-        position: 'relative'
-    };
-    return <div style={style}>
-        <ClockFace />
-        {minuteDigits(size)}
+const Clock = () => {
+    return <div className='clock'>
+        <div className='clock-inner'>
+            <ClockFace />
+            {minuteDigits()}
+        </div>
     </div>
 };
 
